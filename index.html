@@ -1,15 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit User Data</title>
+</head>
+<body>
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>JavaScript Lab</title>
-  </head>
+  <h1>Submit User Data</h1>
 
-  <body>
-    <script src="index.js"></script>
-  </body>
+  <!-- Form to gather user input -->
+  <form id="userDataForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    <br>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <br>
+    <button type="button" onclick="handleFormSubmit()">Submit</button>
+  </form>
 
+  <script>
+    // JavaScript code for fetching and submitting user data
+    function submitData(name, email) {
+      const userData = {
+        name: name,
+        email: email
+      };
+
+      return fetch('http://localhost:3000/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        return data;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        return error;
+      });
+    }
+
+    // Function to handle form submission
+    function handleFormSubmit() {
+      // Get user input from the form
+      const userName = document.getElementById('name').value;
+      const userEmail = document.getElementById('email').value;
+
+      // Call submitData function with user input
+      submitData(userName, userEmail)
+        .then(result => {
+          // Handle the result if needed
+          console.log('Submission result:', result);
+        });
+    }
+  </script>
+
+</body>
 </html>
